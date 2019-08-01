@@ -1,0 +1,9 @@
+.home {
+  display: flex;
+}
+
+.homeContent {
+  height: 100vh;
+  width: calc(100vw - 120px);
+  background: #fff;
+}
