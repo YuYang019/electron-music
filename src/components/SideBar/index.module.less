@@ -1,0 +1,40 @@
+@import '../../theme/common.less';
+
+.sideBar {
+  width: @sidebar-width;
+  min-width: @sidebar-min-width;
+  border-right: 1px solid @border-color-base;
+  height: calc(100vh - @playbar-height);
+  background: @sidebar-bg-color;
+  color: @text-color;
+  padding: @sidebar-padding;
+}
+
+.list {
+  margin: 0;
+  padding: 0 20px 0 0;
+}
+
+.list li {
+  margin: @sidebar-item-margin;
+}
+
+.list li a {
+  display: block;
+  padding: @sidebar-link-padding;
+  border-radius: @border-radius-base;
+}
+
+.list .title {
+  margin: @sidebar-title-margin;
+  padding: @sidebar-title-padding;
+  color: @sidebar-title-color;
+  font-size: @font-size-sm;
+  font-weight: bold;
+  cursor: default;
+}
+
+:global .active {
+  background: @primary-color;
+  color: @text-color-active;
+}

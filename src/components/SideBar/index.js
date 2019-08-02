@@ -1,7 +1,7 @@
 import React from 'react';
-import styles from './index.module.css';
-import { Switch, Route, NavLink } from 'react-router-dom';
-import routes from '../../constants/routes';
+import styles from './index.module.less';
+import { NavLink } from 'react-router-dom';
+import routes from '@/constants/routes';
 import Avatar from '../Avatar'
 
 export default props => {
@@ -9,12 +9,16 @@ export default props => {
     <div className={styles.sideBar}>
       <Avatar />
       <ul className={styles.list}>
+        <li className={styles.title}>在线音乐</li>
+        <li>
+          <NavLink exact to={routes.DISCOVER}>发现</NavLink>
+        </li>
         <li className={styles.title}>我的音乐</li>
         <li>
-          <NavLink to={routes.COUNTER}>to counter</NavLink>
+          <NavLink exact to={routes.COUNTER}>to counter</NavLink>
         </li>
         <li>
-          <NavLink to={routes.LIKE}>to like</NavLink>
+          <NavLink exact to={routes.LIKE}>我喜欢的</NavLink>
         </li>
       </ul>
     </div>

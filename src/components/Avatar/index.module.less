@@ -1,9 +1,7 @@
 @import '../../theme/common.less';
 
 .avatar {
-  display: flex;
-  padding-left: 20px;
-  padding-bottom: 20px;
+  padding: 30px 0 0 0px;
 }
 
 .avatarImg {
@@ -12,26 +10,30 @@
   height: 50px;
   border-radius: 50%;
   border: 1px solid @border-color-base;
-  margin-right: 15px;
+  margin: 0 auto;
 }
 
-.right {
-  height: 50px;
+.bottom {
+  margin: 10px 0;
 }
 
 .name {
-  font-size: 18px;
+  margin: 0;
   font-weight: bold;
-  margin: 4px 0 6px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .3s;
+  &:hover {
+    color: @text-color-focus;
+  }
 }
 
-.icon {
-  border: 1px solid @primary-color;
-  color: @primary-color;
-  text-align: center;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: bold;
+// :global .icon {
+//   font-size: 16px;
+// }
+
+.unLogin {
+  line-height: 50px;
   margin: 0;
-  padding: 2px 6px;
+  font-weight: bold;
 }

@@ -1,15 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { configureStore, history } from './store/configureStore';
-import Root from './containers/Root';
+import App from './containers/App';
 import * as serviceWorker from './serviceWorker';
-import './index.css';
+import './index.less';
 import 'normalize.css';
 
 const store = configureStore();
 
 ReactDOM.render(
-    <Root store={store} history={history} />,
+    <App store={store} history={history} />,
     document.getElementById('root')
 );
 
