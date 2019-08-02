@@ -6,6 +6,7 @@ import CounterPage from '../CounterPage';
 import SideBar from '@/components/SideBar';
 import routes from '@/constants/routes';
 import Like from '@/components/Like';
+import ToolBar from '@/components/ToolBar';
 
 import styles from './index.module.css';
 
@@ -15,6 +16,7 @@ class HomePage extends Component {
       <div className={styles.home}>
         <SideBar />
         <div className={styles.homeContent}>
+          <ToolBar />
           <Fragment>
             <Switch>
               <Route exact path={routes.DISCOVER} component={Discover} />              
