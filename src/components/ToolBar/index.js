@@ -6,7 +6,7 @@ import styles from './index.module.less';
 
 export default (props) => {
   return (
-    <div style={{'-webkit-app-region': 'drag'}} className={styles.toolBar}>
+    <div style={{'WebkitAppRegion': 'drag'}} className={styles.toolBar}>
         <Control />
         <Search />
         <Setting />

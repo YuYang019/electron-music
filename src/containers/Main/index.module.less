@@ -1,9 +1,11 @@
+@import '../../theme/common.less';
+
 .home {
   display: flex;
 }
 
 .homeContent {
-  height: 100vh;
+  height: calc(100vh - @playbar-height - @toolbar-height);
   width: calc(100vw - 120px);
   background: #fff;
 }

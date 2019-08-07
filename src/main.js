@@ -25,7 +25,7 @@ app.on('ready', () => {
     titleBarStyle: 'hidden', // title-bar的样式——隐藏顶部栏的横条，把操作按钮嵌入窗口
   });
 
-  mainWindow.loadURL('http://localhost:3001');
+  mainWindow.loadURL('http://localhost:3000');
 
   mainWindow.webContents.on('did-finish-load', () => {
     if (!mainWindow) {

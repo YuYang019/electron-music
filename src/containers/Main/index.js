@@ -8,7 +8,7 @@ import routes from '@/constants/routes';
 import Like from '@/components/Like';
 import ToolBar from '@/components/ToolBar';
 
-import styles from './index.module.css';
+import styles from './index.module.less';
 
 class HomePage extends Component {
   render() {
