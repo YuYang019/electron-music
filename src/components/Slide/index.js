@@ -29,21 +29,24 @@ export default props => {
             const item = items[0];
             const width = getEleStyle(item, 'width');
             const height = getEleStyle(item, 'height');
-            console.log(width)
+
             itemLength = listDOM.children.length;
             itemHeight = height;
             itemWidth = width;
             leftStyle = {
-                left: `${0 - (0.2 * width / 2)}px`,
-                transform: ['scale(0.8)']
+                // left: `${0 - (0.2 * width / 2)}px`,
+                // transform: ['scale(0.8)']
+                transform: [`translateX(${0 - (0.2 * width / 2)}px) scale(0.8)`]
             };
             middleStyle = {
-                left: `${(listWidth - width) / 2}px`,
-                transform: ['scale(1)']
+                // left: `${(listWidth - width) / 2}px`,
+                // transform: ['scale(1)'],
+                transform: [`translateX(${(listWidth - width) / 2}px) scale(1)`]
             };
             rightStyle = {
-                left: `${(listWidth - width + (0.2 * width / 2))}px`,
-                transform: ['scale(0.8)']
+                // left: `${(listWidth - width + (0.2 * width / 2))}px`,
+                // transform: ['scale(0.8)'],
+                transform: [`translateX(${(listWidth - width + (0.2 * width / 2))}px) scale(0.8)`]
             };
         }
     }
@@ -51,8 +54,9 @@ export default props => {
     const getItemProps = index => {
         let className = '';
         let style = {
-            left: `${(listWidth - itemWidth * 0.8) / 2}px`,
-            transform: ['scale(0.8)']
+            // left: `${(listWidth - itemWidth * 0.8) / 2}px`,
+            // transform: ['scale(0.8)']
+            transform: [`translateX(${(listWidth - itemWidth * 0.8) / 2}px) scale(0.8)`]
         };
 
         if (index === curIndex) {
