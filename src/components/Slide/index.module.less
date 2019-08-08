@@ -1,0 +1,33 @@
+.slide {
+    position: relative;
+    .container {
+        display: flex;
+        height: 200px;
+        position: relative;
+    }
+    .item {
+        position: absolute;
+        transition: all 0.3s linear;        
+    }
+    .left {
+        z-index: 200;
+    }
+    .middle {
+        z-index: 300;
+        .mask {
+            background: transparent;
+        }
+    }
+    .right {
+        z-index: 200;
+    }
+    .mask {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transition: all 0.3s linear;
+        background: rgba(0, 0, 0, .5);
+    }
+}

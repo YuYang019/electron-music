@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+// banners
+export const getBanners = () => axios.get('/banner?type=0').then(res => res.data);
 // 独家放送
 export const privateContent = () => axios.get('/personalized/privatecontent').then(res => res.data);
 // 最新专辑
