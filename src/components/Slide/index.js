@@ -20,7 +20,7 @@ export default props => {
     const [curIndex, setIndex] = useState(0);
     const { children } = props;
 
-    if (listDOM) {
+    if (listDOM && !listWidth) {
         const { width } = listDOM.getBoundingClientRect();
         listWidth = width;
 
@@ -34,16 +34,16 @@ export default props => {
             itemHeight = height;
             itemWidth = width;
             leftStyle = {
-                left: `${0 - width * 0.15}px`,
-                transform: ['scale(0.75)']
+                left: `${0 - (0.2 * width / 2)}px`,
+                transform: ['scale(0.8)']
             };
             middleStyle = {
                 left: `${(listWidth - width) / 2}px`,
                 transform: ['scale(1)']
             };
             rightStyle = {
-                left: `${(listWidth - width + ( 0.25 * width / 2))}px`,
-                transform: ['scale(0.75)']
+                left: `${(listWidth - width + (0.2 * width / 2))}px`,
+                transform: ['scale(0.8)']
             };
         }
     }
@@ -51,8 +51,8 @@ export default props => {
     const getItemProps = index => {
         let className = '';
         let style = {
-            left: `${(listWidth - itemWidth * 0.75) / 2}px`,
-            transform: ['scale(0.75)']
+            left: `${(listWidth - itemWidth * 0.8) / 2}px`,
+            transform: ['scale(0.8)']
         };
 
         if (index === curIndex) {
