@@ -1,8 +1,9 @@
 import React from 'react';
-import styles from './index.module.less';
 import { NavLink } from 'react-router-dom';
+import { Icon } from 'antd';
 import routes from '@/constants/routes';
 import Avatar from '../Avatar'
+import styles from './index.module.less';
 
 export default props => {
   return (
@@ -12,7 +13,7 @@ export default props => {
         <li className={styles.title}>在线音乐</li>
         <li>
           <NavLink exact to={routes.DISCOVER}>
-            <i className="iconfont icon-bulb"></i>
+            <Icon type="bulb" />
             发现
           </NavLink>
         </li>
@@ -22,7 +23,7 @@ export default props => {
         </li>
         <li>
           <NavLink exact to={routes.LIKE}>
-            <i className="iconfont icon-heart"></i>
+            <Icon type="heart" />
             我喜欢的
           </NavLink>
         </li>

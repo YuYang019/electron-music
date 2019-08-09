@@ -23,6 +23,11 @@
   display: block;
   padding: @sidebar-link-padding;
   border-radius: @border-radius-base;
+  transition: all .2s ease;
+  &:hover {
+    background: @bg-color-active;
+    color: @text-color;
+  }
 }
 
 .list li i {
@@ -41,4 +46,8 @@
 :global .active {
   background: @primary-color;
   color: @text-color-active;
+  &:hover {
+    background: @primary-color !important;
+    color: #fff !important;
+  }
 }

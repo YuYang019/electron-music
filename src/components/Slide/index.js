@@ -21,7 +21,7 @@ export default props => {
     const { children } = props;
 
     if (listDOM && !listWidth) {
-        const { width } = listDOM.getBoundingClientRect();
+        const width = getEleStyle(listDOM, 'width');
         listWidth = width;
 
         const items = listDOM.children;
@@ -89,7 +89,6 @@ export default props => {
     const getSlides = children => {
         return children.map((item, index) => {
             const { className, style } = getItemProps(index);
-            console.log(style);
             return (
                 <div
                     key={item.key}
@@ -103,26 +102,53 @@ export default props => {
         });
     };
 
-    const handleClick = () => {
-        let index = curIndex + 1;
-        index = index > itemLength - 1 ? 0 : index;
-        setIndex(index);
-    };
+    const getPointer = children => {
+        const length = children.length;
+        const pointers = []
+        for (let i = 0; i < length; i++) {
+            let pointer
+            let className = ''
+            if (i === curIndex) {
+                className = styles.pointer + ' ' + styles.active
+            } else {
+                className = styles.pointer
+            }
+            pointer = (
+                <div key={i} data-index={i} onMouseEnter={handleMouseEnter} className={styles.pointerWrapper}>
+                    <div className={className}></div>
+                </div>
+            )
+            pointers.push(pointer)
+        }
+        return pointers
+    }
 
-    const handleClick2 = () => {
-        let index = curIndex - 1;
-        index = index < 0 ? itemLength - 1 : index
-        setIndex(index);
-    };
+    function handleMouseEnter (e) {
+        const index = +e.currentTarget.getAttribute('data-index');
+        if (curIndex !== index) {
+            setIndex(index);
+        }
+    }
+
+    function goNext() {
+        let index = curIndex + 1
+        index = index > itemLength ? 0 : index;
+        setIndex(index)
+    }
+
+    function goPre() {
+        let index = curIndex - 1
+        index = index < 0 ? itemLength - 1 : index;
+        setIndex(index)
+    }
 
     return (
         <div className={styles.slide}>
             <div ref={node => setListDOM(node)} className={styles.container}>
                 {getSlides(children)}
             </div>
-            <div>
-                <button onClick={handleClick}>sadadasd</button>
-                <button onClick={handleClick2}>sadadasd</button>
+            <div className={styles.pointerContainer}>
+                {getPointer(children)}
             </div>
         </div>
     );

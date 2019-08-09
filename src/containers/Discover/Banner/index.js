@@ -5,7 +5,7 @@ import styles from './index.module.less';
 
 function getSlides(data) {
     return data.map(item => (
-        <div className={styles.imgWrapper} key={item.targetId}>
+        <div className={styles.imgWrapper} key={item.imageUrl}>
             <img src={item.imageUrl} alt={item.typeTitle} />
         </div>
     ))
