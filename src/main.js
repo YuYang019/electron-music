@@ -23,11 +23,16 @@ app.on('ready', () => {
     transparent: true,
     fullscreenable: false,
     titleBarStyle: 'hidden', // title-bar的样式——隐藏顶部栏的横条，把操作按钮嵌入窗口
+    webPreferences: {
+      nodeIntegration: true
+    }
   });
 
   mainWindow.loadURL('http://localhost:3000');
 
-  mainWindow.webContents.on('did-finish-load', () => {
+  const contents = mainWindow.webContents;
+
+  contents.on('did-finish-load', () => {
     if (!mainWindow) {
       throw new Error('"mainWindow" is not defined');
     }
@@ -39,7 +44,7 @@ app.on('ready', () => {
     }
   });
 
-  mainWindow.webContents.openDevTools()
+  contents.openDevTools()
 
   mainWindow.on('closed', () => mainWindow = null);
 });
