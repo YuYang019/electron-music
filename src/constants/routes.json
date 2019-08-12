@@ -1,5 +1,6 @@
 {
   "DISCOVER": "/",
   "COUNTER": "/counter",
-  "LIKE": "/like"
+  "LIKE": "/like",
+  "PLAYLIST": "/playlist/:id"
 }

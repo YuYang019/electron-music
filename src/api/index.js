@@ -12,3 +12,5 @@ export const personalized = () => axios.get('/personalized').then(res => res.dat
 export const personalizedSong = () => axios.get('/personalized/newsong').then(res => res.data);
 // 推荐mv
 export const personalizedMV = () => axios.get('/personalized/mv').then(res => res.data);
+// 歌单列表
+export const getPlayList = (params) => axios.get('/playlist/detail', { params }).then(res => res.data);

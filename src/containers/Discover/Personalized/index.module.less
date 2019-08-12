@@ -4,6 +4,7 @@
     .title {
         font-size: 16px;
         font-weight: bold;
+        cursor: default;
         i {
             margin-left: 8px;
         }
@@ -15,8 +16,10 @@
         flex-wrap: wrap;
         margin-bottom: 1000px;
         .item {
+            position: relative;
             width: 130px;
             margin-bottom: 20px;
+            transition: all .3s ease;
             img {
                 width: 130px;
                 height: 130px;
@@ -27,6 +30,41 @@
                 line-height: 1.5;
                 font-size: 13px;
                 color: #000;
+            }
+            .playCount {
+                position: absolute;
+                top: 3px;
+                right: 7px;
+                font-size: 12px;
+                font-weight: bold;
+                font-family: sans-serif;
+                color: #fff;
+                i {
+                    display: inline-block;
+                    margin-right: 3px;
+                }
+            }
+            &:hover {
+                .playIcon {
+                    opacity: 1;
+                }
+            }
+            .playIcon {
+                background: rgba(255, 255, 255, 0.6);
+                position: absolute;
+                top: 90px;
+                right: 8px;
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                color: @primary-color;
+                opacity: 0;
+                transition: all .3s ease;
+                i {
+                    margin-top: 5px;
+                    margin-left: 6px;
+                    font-size: 20px;
+                }
             }
         }
     }
