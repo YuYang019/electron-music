@@ -7,6 +7,8 @@ import Comment from './Comment';
 
 import styles from './index.module.less';
 
+const { Tabs, TabPane } = Tab;
+
 export default (props) => {
     const [data, setData] = useState(null);
     const { match: { params: { id } } } = props;
@@ -27,10 +29,24 @@ export default (props) => {
         )
     }
 
+    function handleChange() {}
+
     return (
-        <div>
+        <div className={styles.playlist}>
             <Head data={data} />
-            <Tab />
+            <Tabs defaultKey="1" onChange={handleChange}>
+                <TabPane tabKey="1" tab="歌曲列表">
+                    <List data={data} />
+                </TabPane>
+                <TabPane tabKey="2" tab={() => (
+                    <div>
+                        评论
+                        <span style={{fontSize: 12}}>({data.commentCount})</span>
+                    </div>
+                )}>
+                    <Comment />
+                </TabPane>
+            </Tabs>
         </div>
     )
 }
