@@ -8,11 +8,18 @@ import { Icon } from 'antd';
 import { sampleSize } from 'lodash';
 import { personalized } from '@/api';
 import { getCount } from '@/utils';
+import storage from '@/utils/storage';
 import styles from './index.module.less';
 
 function getSongList(data, handleClick) {
-    if (data.length > 10) {
-        data = sampleSize(data, 10);
+    const cached = storage.get('Personalized')
+    if (cached) {
+        data = cached
+    } else {
+        if (data.length > 10) {
+            data = sampleSize(data, 10);
+        }
+        storage.set('Personalized', data)
     }
     return data.map(item => (
         <div key={item.id} className={styles.item} onClick={() => handleClick(item.id)}>

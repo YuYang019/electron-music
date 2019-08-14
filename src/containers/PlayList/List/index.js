@@ -1,58 +1,64 @@
 import React, { useState } from 'react';
 import { Icon } from 'antd';
 import classNames from 'classnames';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import MusicIcon from '@/components/MusicIcon';
 import { getDuration } from '@/utils';
+import * as PlayerAction from '@/actions/player';
+import { checkMusic } from '@/api';
+
 import styles from './index.module.less';
 
 const remote = window.require('electron').remote;
 
 const { Menu, MenuItem } = remote;
 
-const menu = new Menu();
-menu.append(new MenuItem({ label: '播放', click() {} }));
-menu.append(new MenuItem({ label: `查看评论` }));
-menu.append(new MenuItem({ label: '下一首播放' }));
+function getAuthor(authors) {
+    let result = '';
+    for (let i = 0; i < authors.length; i++) {
+        result += authors[i].name + ' / ';
+    }
+    return result.slice(0, -3);
+}
 
-export default props => {
+function getIndex(index) {
+    index = +index + 1;
+    if (index < 10) {
+        index = `0${index}`;
+    }
+    return index;
+}
+
+const List = props => {
     const {
-        data: { tracks }
+        data: { tracks },
+        getMusic,
+        player
     } = props;
     const [curIndex, setIndex] = useState(null);
-    const [curPlayIndex, setPlayIndex] = useState(null);
-    const [stop, setStop] = useState(false);
-    const [play, setPlay] = useState(false);
 
-    function getAuthor(authors) {
-        let result = '';
-        for (let i = 0; i < authors.length; i++) {
-            result += authors[i].name + ' / ';
-        }
-        return result.slice(0, -3);
-    }
-
-    function getIndex(index) {
-        index = +index + 1;
-        if (index < 10) {
-            index = `0${index}`;
-        }
-        return index;
-    }
+    const { status, data } = player
 
     function handleItemClick(index) {
         setIndex(index);
     }
 
-    function handleMenuClick(id) {
-        console.log(id);
+    function handleMenuClick(item) {
+        const menu = new Menu();
+        menu.append(new MenuItem({ label: '播放', click() { handleDoubleClick(item) } }));
+        menu.append(new MenuItem({ label: `查看评论` }));
+        menu.append(new MenuItem({ label: '下一首播放' }));
         menu.popup({ window: remote.getCurrentWindow() });
     }
 
-    function handleDoubleClick(item, index) {
-        console.log(item);
-        setPlayIndex(index);
-        setPlay(true);
-        setStop(false);
+    function handleDoubleClick(item) {
+        const { id } = item;
+        checkMusic({ id }).then(res => {
+            if (res.success === true) {
+                getMusic(id, item)
+            }
+        });
     }
 
     return (
@@ -68,20 +74,20 @@ export default props => {
                     const classnames = classNames(styles.item, {
                         [styles.odd]: index % 2 === 0,
                         [styles.clicked]: index === curIndex,
-                        [styles.active]: play && index === curPlayIndex
+                        [styles.active]: data && (item.id === data.id)
                     });
                     return (
                         <li
                             className={classnames}
                             key={item.id}
-                            onDoubleClick={() => handleDoubleClick(item, index)}
+                            onDoubleClick={() => handleDoubleClick(item)}
                             onClick={() => handleItemClick(index)}
                         >
                             <span>
-                                {play && index === curPlayIndex ? (
+                                {data && item.id === data.id ? (
                                     <MusicIcon
                                         className={styles.musicIcon}
-                                        stop={stop}
+                                        stop={status !== 1}
                                     />
                                 ) : (
                                     getIndex(index)
@@ -104,3 +110,18 @@ export default props => {
         </div>
     );
 };
+
+function mapStateToProps(state) {
+    return {
+        player: state.player
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators(PlayerAction, dispatch);
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(List);

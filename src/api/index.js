@@ -14,3 +14,7 @@ export const personalizedSong = () => axios.get('/personalized/newsong').then(re
 export const personalizedMV = () => axios.get('/personalized/mv').then(res => res.data);
 // 歌单列表
 export const getPlayList = (params) => axios.get('/playlist/detail', { params }).then(res => res.data);
+// 检查可用
+export const checkMusic = (params) => axios.get('/check/music', { params }).then(res => res.data);
+// songurl
+export const getMusicUrl = (params) => axios.get('/song/url', { params }).then(res => res.data);

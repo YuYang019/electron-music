@@ -1,10 +1,127 @@
 @import '../../theme/common.less';
 
 .playBar {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: @playbar-height;
-  background: @playbar-bg-color;
+    display: flex;
+    justify-content: space-between;
+    color: rgba(255, 255, 255, 0.8);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: @playbar-height;
+    backdrop-filter: blur(10px);
+    &:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgb(52, 47, 52);
+        background: linear-gradient(
+            90deg,
+            rgba(52, 47, 52, 1) 15%,
+            rgba(60, 44, 66, 1) 33%,
+            rgba(53, 65, 64, 1) 66%,
+            rgba(38, 39, 40, 1) 88%
+        );
+        z-index: -1;
+    }
+    .left {
+        margin-left: 40px;
+        > div {
+            margin-top: 12px;
+            span {
+                display: inline-block;
+                vertical-align: middle;
+                margin-right: 20px;
+            }
+            & > span {
+                &:nth-child(1) {
+                    font-size: 25px;
+                }
+                &:nth-child(2) {
+                    font-size: 38px;
+                }
+                &:nth-child(3) {
+                    font-size: 25px;
+                }
+            }
+        }
+    }
+    .mid {
+        display: flex;
+        .img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 25px;
+            margin-top: 15px;
+            img {
+              width: 100%;
+              height: 100%;
+              border-radius: 50%;
+            }
+        }
+        .name {
+            margin-top: 23px;
+            margin-bottom: 2px;
+            display: flex;
+            justify-content: space-between;
+            span {
+                &:nth-child(1) {
+                    color: #fff;
+                }
+                &:nth-child(2) {
+                    font-size: 12px;
+                    color: rgba(255, 255, 255, 0.5);
+                }
+            }
+        }
+        .progressWrapper {
+            position: relative;
+            padding: 8px 0;
+            &:hover {
+                .curProgress::after {
+                    opacity: 1;
+                }
+            }
+            .progress {
+                width: 450px;
+                height: 3px;
+                background: #fff;
+            }
+            .curProgress {
+                position: absolute;
+                top: 8px;
+                left: 0;
+                width: 0px;
+                height: 3px;
+                background: @primary-color;
+                &::after {
+                    transition: all 0.1s ease;
+                    content: '';
+                    position: absolute;
+                    right: -5px;
+                    top: -4px;
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 50%;
+                    background: @primary-color;
+                    opacity: 0;
+                    box-shadow: @box-shadow-base;
+                }
+            }
+        }
+    }
+    .right {
+        margin-right: 30px;
+        font-size: 18px;
+        .rightIcon {
+            margin-top: 28px;
+            i {
+                margin-right: 25px;
+            }
+        }
+    }
 }
