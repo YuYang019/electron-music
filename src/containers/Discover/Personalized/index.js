@@ -7,16 +7,8 @@ import { withRouter } from 'react-router-dom';
 import { Icon } from 'antd';
 import { sampleSize } from 'lodash';
 import { personalized } from '@/api';
+import { getCount } from '@/utils';
 import styles from './index.module.less';
-
-function getCount(num) {
-    num = +num;
-    if (num < 10000) {
-        return num
-    } else {
-        return `${Math.round(num / 10000)}万`
-    }
-}
 
 function getSongList(data, handleClick) {
     if (data.length > 10) {

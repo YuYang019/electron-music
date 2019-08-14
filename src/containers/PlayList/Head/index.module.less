@@ -1,3 +1,5 @@
+@import '../../../theme/common.less';
+
 .head {
     display: flex;
     padding: 5px 30px 30px;
@@ -15,12 +17,85 @@
             color: #000;
             font-size: 22px;
             font-weight: bold;
+            margin-bottom: 10px;
+            span {
+                display: inline-block;
+                vertical-align: middle;
+            }
+            .icon {
+                display: inline-block;
+                padding: 0 5px;
+                border-radius: 2px;
+                color: @primary-color;
+                border: 1px solid @primary-color;
+                margin-right: 10px;
+                font-size: 13px;
+            }
         }
         .creator {
+            margin-bottom: 23px;
             img {
-                width: 20px;
-                height: 20px;
+                width: 21px;
+                height: 21px;
                 border-radius: 50%;
+                margin-right: 10px;
+            }
+            span {
+                margin-right: 8px;
+            }
+            .createTime {
+                color: @text-color-focus;
+            }
+        }
+        .operator {
+            display: flex;
+            margin-bottom: 16px;
+            & > div {
+                transition: all .2s ease;
+                margin-right: 10px;
+                height: 30x;
+                line-height: 30px;
+                padding: 0px 10px;
+                border-radius: 5px;
+                font-size: 13px;
+                color: @text-color-stress;
+                border: 1px solid rgb(206, 206, 206);
+                i {
+                    margin-top: 3px;
+                    font-size: 16px;
+                    margin-right: 5px;
+                }
+                &:hover {
+                    background: @bg-color-active;
+                }
+            }
+            .active {
+                padding: 0 18px;
+                background: @primary-color;
+                color: #fff;
+                border: 1px solid @primary-color;
+                &:hover {
+                    background: @primary-color-active;
+                    border: 1px solid @primary-color-active;
+                }
+            }
+        }
+        .tags {
+            margin-bottom: 5px;
+            span {
+                color: @text-color-stress;
+            }
+        }
+        .counts {
+            margin-bottom: 5px;
+            span {
+                color: @text-color-stress;
+            }
+        }
+        .description {
+            margin-bottom: 5px;
+            span {
+                color: @text-color-stress;
             }
         }
     } 

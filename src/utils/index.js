@@ -1,0 +1,34 @@
+export function getCount (num) {
+    num = +num;
+    if (num < 10000) {
+        return num
+    } else {
+        return `${Math.round(num / 10000)}万`
+    }
+}
+
+export function getDate (time, split = '-') {
+    const date = new Date(time);
+    const year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate()
+
+    month = month < 10 ? `0${month}` : month
+    day = day < 10 ? `0${day}` : day
+
+    return `${year}${split}${month}${split}${day}`
+}
+
+export function getDuration(duration) {
+    duration = +duration;
+    let minute = Math.floor(duration / (60 * 1000));
+    let second = Math.round((duration % (60 * 1000)) / 1000);
+
+    if (minute < 10) {
+        minute = `0${minute}`;
+    }
+    if (second < 10) {
+        second = `0${second}`;
+    }
+    return `${minute}:${second}`;
+}
