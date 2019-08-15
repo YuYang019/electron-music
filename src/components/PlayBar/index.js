@@ -1,23 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Icon, Popover } from 'antd';
+import { Icon } from 'antd';
 import * as PlayerAction from '@/actions/player';
 import { getDuration } from '@/utils';
+import Volume from './Volume';
+import MusicList from './MusicList';
+
 import styles from './index.module.less';
 
 const PlayBar = props => {
     const {
         startMusic,
         pauseMusic,
-        player: { status, data }
+        endMusic,
+        player: { status, data, musicList }
     } = props;
     const [audio, setAudioDOM] = useState(null);
-    const [time, setTime] = useState(null);
+    const [tipVisible, setTipVisible] = useState(false);
+    const [volume, setVolume] = useState(50);
+    const [time, setTime] = useState(0);
     const [width, setWidth] = useState(0);
 
     useEffect(() => {
         if (audio) {
+            audio.volume = volume / 100;
             audio.onplaying = () => {
                 console.log(1);
                 startMusic();
@@ -26,18 +33,26 @@ const PlayBar = props => {
                 pauseMusic();
             };
             audio.ontimeupdate = () => {
-                setTime(audio.currentTime)
-                setWidth(450 * (audio.currentTime / audio.duration))
+                setTime(audio.currentTime);
+                setWidth(450 * (audio.currentTime / audio.duration));
+            };
+            audio.onended = () => {
+                endMusic();
             };
         }
-    }, [audio, pauseMusic, startMusic]);
+    }, [audio, pauseMusic, startMusic, endMusic, volume]);
+
+    useEffect(() => {
+        if (data) {
+            setTipVisible(true);
+            setTimeout(() => {
+                setTipVisible(false);
+            }, 2000);
+        }
+    }, [data]);
 
     if (!data) {
         return <div className={styles.playBar} />;
-    }
-
-    const progressStyle = {
-      width
     }
 
     function handlePlay() {
@@ -46,11 +61,15 @@ const PlayBar = props => {
     function handlePause() {
         audio.pause();
     }
+    function handleClickProgress(e) {
+        const offset = e.pageX - 327;
+        const percent = offset / 450;
+        audio.currentTime = audio.duration * percent;
+        setWidth(450 * percent);
+        setTime(audio.duration * percent);
+    }
 
     const { url, detail } = data;
-
-    const soundContent = <div>aaaa</div>;
-
     return (
         <div className={styles.playBar}>
             <audio
@@ -89,21 +108,29 @@ const PlayBar = props => {
                                 {detail.al.name}
                             </span>
                         </span>
-                        <span>{getDuration(time, 's')} / {getDuration(detail.dt)}</span>
+                        <span>
+                            {getDuration(time, 's')} / {getDuration(detail.dt)}
+                        </span>
                     </div>
-                    <div className={styles.progressWrapper}>
+                    <div
+                        className={styles.progressWrapper}
+                        onClick={handleClickProgress}
+                    >
                         <div className={styles.progress} />
-                        <div style={progressStyle} className={styles.curProgress} />
+                        <div
+                            style={{ width: !!width ? width : 0 }}
+                            className={styles.curProgress}
+                        >
+                            <div className={styles.ball} />
+                        </div>
                     </div>
                 </div>
             </div>
             <div className={styles.right}>
                 <div className={styles.rightIcon}>
                     <Icon type='retweet' />
-                    <Icon type='menu-fold' />
-                    <Popover content={soundContent}>
-                        <Icon type='sound' />
-                    </Popover>
+                    <MusicList list={musicList} tipVisible={tipVisible} />
+                    <Volume vol={volume} setVol={setVolume} />
                 </div>
             </div>
         </div>

@@ -34,7 +34,7 @@ class Storage {
     }
 
     remove(key) {
-        this._storage.remove(key)
+        this._storage.removeItem(key)
     }
 
     clear() {

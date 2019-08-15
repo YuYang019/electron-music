@@ -3,7 +3,7 @@ import { getMusicUrl } from '../api';
 export const PLAYER_DATA = 'PLAYER_DATA';
 export const PLAYER_START = 'PLAYER_START';
 export const PLAYER_PAUSE = 'PLAYER_PAUSE';
-export const PLAYER_EMPTY = 'PLAYER_EMPTY';
+export const PLAYER_END = 'PLAYER_END';
 
 function getAction(type, payload) {
     return {
@@ -12,14 +12,22 @@ function getAction(type, payload) {
     };
 }
 
-export function getMusic(id, music) {
+export function getMusic(music, musicList) {
     return (dispatch, getState) => {
-        return getMusicUrl({ id }).then(res => {
+        return getMusicUrl({ id: music.id }).then(res => {
             if (res.data && res.data.length) {
-                const data = { detail: music, ...res.data[0] }
-                dispatch(getAction(PLAYER_DATA, { data }));
+                if (!res.data[0].url) {
+                    res.data[0].url = `https://music.163.com/song/media/outer/url?id=${music.id}.mp3`
+                }
+                const data = { detail: music, ...res.data[0] };
+                dispatch(
+                    getAction(PLAYER_DATA, {
+                        data,
+                        musicList: musicList ? musicList : [music]
+                    })
+                );
             }
-        })
+        });
     };
 }
 
@@ -29,9 +37,9 @@ export function pauseMusic(id) {
     };
 }
 
-export function emptyMusic(id) {
+export function endMusic(id) {
     return (dispatch, getState) => {
-        dispatch(getAction(PLAYER_EMPTY));
+        dispatch(getAction(PLAYER_END));
     };
 }
 
@@ -40,4 +48,3 @@ export function startMusic(id) {
         dispatch(getAction(PLAYER_START));
     };
 }
-

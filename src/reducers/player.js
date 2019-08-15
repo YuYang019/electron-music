@@ -1,8 +1,9 @@
-import { PLAYER_DATA, PLAYER_START, PLAYER_PAUSE, PLAYER_EMPTY } from '@/actions/player';
+import { PLAYER_DATA, PLAYER_START, PLAYER_PAUSE, PLAYER_END } from '@/actions/player';
 
 const playerState = {
     data: null,
-    status: 0 // 0 未播放，1 播放中，2 暂停
+    status: 0, // 0 未播放，1 播放中，2 暂停
+    musicList: [],
 }
 
 export default (state = playerState, action) => {
@@ -13,7 +14,7 @@ export default (state = playerState, action) => {
       return state = { ...state, status: 1 };
     case PLAYER_PAUSE:
       return state = { ...state, status: 2 };
-    case PLAYER_EMPTY:
+    case PLAYER_END:
       return state = { ...state, status: 0 };
     default:
       return state;

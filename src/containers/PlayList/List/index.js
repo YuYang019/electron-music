@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import MusicIcon from '@/components/MusicIcon';
+import Table from '@/components/Table';
 import { getDuration } from '@/utils';
 import * as PlayerAction from '@/actions/player';
 import { checkMusic } from '@/api';
@@ -38,15 +39,23 @@ const List = props => {
     } = props;
     const [curIndex, setIndex] = useState(null);
 
-    const { status, data } = player
+    const { status, data } = player;
 
     function handleItemClick(index) {
+        console.log(index)
         setIndex(index);
     }
 
     function handleMenuClick(item) {
         const menu = new Menu();
-        menu.append(new MenuItem({ label: '播放', click() { handleDoubleClick(item) } }));
+        menu.append(
+            new MenuItem({
+                label: '播放',
+                click() {
+                    handleDoubleClick(item);
+                }
+            })
+        );
         menu.append(new MenuItem({ label: `查看评论` }));
         menu.append(new MenuItem({ label: '下一首播放' }));
         menu.popup({ window: remote.getCurrentWindow() });
@@ -56,57 +65,74 @@ const List = props => {
         const { id } = item;
         checkMusic({ id }).then(res => {
             if (res.success === true) {
-                getMusic(id, item)
+                getMusic(item, tracks);
             }
         });
     }
 
+    const colums = [
+        {
+            render: (row, index) => (
+                <span className={styles.index} key={0}>
+                    {data && row.id === data.id ? (
+                        <MusicIcon
+                            className={styles.musicIcon}
+                            stop={status !== 1}
+                        />
+                    ) : (
+                        getIndex(index)
+                    )}
+                </span>
+            )
+        },
+        {
+            render: row => (
+                <span className={styles.name} key={1}>
+                    <span>{row.name}</span>
+                    <Icon
+                        onClick={() => handleMenuClick(row)}
+                        type='ellipsis'
+                    />
+                </span>
+            )
+        },
+        {
+            render: row => <span key={2} className={styles.author}>{getAuthor(row.ar)}</span>
+        },
+        {
+            render: row => <span key={3} className={styles.alblum}>{row.al.name}</span>
+        },
+        {
+            render: row => <span key={4} className={styles.duration}>{getDuration(row.dt)}</span>
+        }
+    ];
+
+    const rowClassName = (row, rowIndex) => {
+        console.log(curIndex, rowIndex)
+        const classnames = classNames({
+            [styles.clicked]: rowIndex === curIndex,
+            [styles.active]: data && row.id === data.id
+        });
+        return classnames;
+    };
+
     return (
-        <div>
+        <div className={styles.list}>
             <div className={styles.title}>
                 <span>音乐标题</span>
                 <span>歌手</span>
                 <span>专辑</span>
                 <span>时长</span>
             </div>
-            <ul className={styles.listWrapper}>
-                {tracks.map((item, index) => {
-                    const classnames = classNames(styles.item, {
-                        [styles.odd]: index % 2 === 0,
-                        [styles.clicked]: index === curIndex,
-                        [styles.active]: data && (item.id === data.id)
-                    });
-                    return (
-                        <li
-                            className={classnames}
-                            key={item.id}
-                            onDoubleClick={() => handleDoubleClick(item)}
-                            onClick={() => handleItemClick(index)}
-                        >
-                            <span>
-                                {data && item.id === data.id ? (
-                                    <MusicIcon
-                                        className={styles.musicIcon}
-                                        stop={status !== 1}
-                                    />
-                                ) : (
-                                    getIndex(index)
-                                )}
-                            </span>
-                            <span>
-                                <span>{item.name}</span>
-                                <Icon
-                                    onClick={() => handleMenuClick(item)}
-                                    type='ellipsis'
-                                />
-                            </span>
-                            <span>{getAuthor(item.ar)}</span>
-                            <span>{item.al.name}</span>
-                            <span>{getDuration(item.dt)}</span>
-                        </li>
-                    );
-                })}
-            </ul>
+            <Table
+                onRow={{
+                    onClick: (event, row, rowIndex) => { handleItemClick(rowIndex) },
+                    onDoubleClick: (event, row, rowIndex) => { handleDoubleClick(row) }
+                }}
+                rowClassName={rowClassName}
+                dataSource={tracks}
+                colums={colums}
+            />
         </div>
     );
 };

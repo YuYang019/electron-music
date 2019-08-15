@@ -1,109 +1,96 @@
 @import '../../../theme/common.less';
 
-.title {
-    height: 35px;
-    line-height: 35px;
-    font-size: 12px;
-    color: rgb(145, 144, 144);
-    font-weight: bold;
-    & > span {
-        &:nth-child(1) {
-            padding-left: 125px;
-        }
-        &:nth-child(2) {
-            padding-left: 222px;
-        }
-        &:nth-child(3) {
-            padding-left: 125px;
-        }
-        &:nth-child(4) {
-            padding-left: 158px;
-        }
-    }
-}
-
-.listWrapper {
-    padding: 0;
-    font-size: 12px;
-    .item {
+.list {
+    .title {
         height: 35px;
         line-height: 35px;
-        transition: all 0.1s ease;
+        font-size: 12px;
+        color: rgb(145, 144, 144);
+        font-weight: bold;
+        & > span {
+            &:nth-child(1) {
+                padding-left: 125px;
+            }
+            &:nth-child(2) {
+                padding-left: 222px;
+            }
+            &:nth-child(3) {
+                padding-left: 125px;
+            }
+            &:nth-child(4) {
+                padding-left: 158px;
+            }
+        }
+    }
+
+    .clicked {
+        background: @bg-color-active !important;
+    }
+
+    .active {
+        // background: @bg-color-active;
+        & > span {
+            &:nth-child(2) {
+                color: @primary-color;
+            }
+        }
+    }
+
+    .index,
+    .name,
+    .author,
+    .alblum,
+    .duration {
+        display: inline-block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        padding-right: 8px;
+    }
+
+    .index {
+        margin-left: 30px;
+        width: 95px;
+        color: rgb(174, 174, 174);
         .musicIcon {
             margin-bottom: 11px;
         }
-        &.odd {
-            background: rgb(249, 249, 249);
-        }
-        &:hover {
-            background: @bg-color-active;
-            & > span {
-                &:nth-child(2) {
-                    i {
-                        opacity: 1;
-                    }
-                }
-            }
-        }
-        &.clicked {
-            background: @bg-color-active;
-        }
-        &.active {
-            // background: @bg-color-active;
-            & > span {
-                &:nth-child(2) {
-                    color: @primary-color;
-                }
-            }
-        }
+    }
+    .name {
+        width: 270px;
+        color: #333;
+        font-weight: bold;
+        position: relative;
         & > span {
+            vertical-align: middle;
             display: inline-block;
+            max-width: 230px;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
-            padding-right: 8px;
-
-            &:nth-child(1) {
-                margin-left: 30px;
-                width: 95px;
-                color: rgb(174, 174, 174);
-            }
-            &:nth-child(2) {
-                width: 270px;
-                color: #333;
-                font-weight: bold;
-                position: relative;
-                & > span {
-                    float: left;
-                    max-width: 230px;
-                    overflow: hidden;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                }
-                i {
-                    float: left;
-                    color: rgb(145, 144, 144);
-                    font-size: 24px;
-                    margin-left: 7px;
-                    margin-top: 7px;
-                    font-weight: 900;
-                    opacity: 0;
-                    transition: all 0.1s ease;
-                    &:hover {
-                        color: @text-color;
-                    }
-                }
-            }
-            &:nth-child(3) {
-                width: 150px;
-            }
-            &:nth-child(4) {
-                width: 180px;
-            }
-            &:nth-child(5) {
-                width: 45px;
-                color: rgb(174, 174, 174);
+        }
+        i {
+            vertical-align: middle;
+            display: inline-block;
+            color: rgb(145, 144, 144);
+            font-size: 24px;
+            margin-left: 7px;
+            font-weight: 900;
+            opacity: 0;
+            transition: all 0.1s ease;
+            &:hover {
+                color: @text-color;
             }
         }
+    }
+    .author {
+        width: 150px;
+    }
+    .alblum {
+        width: 180px;
+    }
+    .duration {
+        width: 45px;
+        color: rgb(174, 174, 174);
     }
 }

@@ -68,6 +68,12 @@
             margin-bottom: 2px;
             display: flex;
             justify-content: space-between;
+            > span:nth-child(1) {
+                max-width: 355px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis
+            }
             span {
                 &:nth-child(1) {
                     color: #fff;
@@ -82,14 +88,21 @@
             position: relative;
             padding: 8px 0;
             &:hover {
-                .curProgress::after {
-                    opacity: 1;
+                .curProgress {
+                    background:  @primary-color-light;
+                    &::after {
+                        opacity: 1;
+                    }
+                }
+                .progress {
+                    background: rgba(255, 255, 255, 0.9);
                 }
             }
             .progress {
                 width: 450px;
                 height: 3px;
-                background: #fff;
+                transition: all .3s ease;
+                background: rgba(255, 255, 255, 0.8);
             }
             .curProgress {
                 position: absolute;
@@ -97,19 +110,24 @@
                 left: 0;
                 width: 0px;
                 height: 3px;
+                transition: all .3s ease;
                 background: @primary-color;
-                &::after {
-                    transition: all 0.1s ease;
+                .ball {
+                    transition: all 0.2s ease;
                     content: '';
                     position: absolute;
-                    right: -5px;
-                    top: -4px;
-                    width: 10px;
-                    height: 10px;
+                    right: -6px;
+                    top: -5px;
+                    width: 12px;
+                    height: 12px;
                     border-radius: 50%;
+                    border: 2px solid @primary-color;
                     background: @primary-color;
-                    opacity: 0;
+                    opacity: 1;
                     box-shadow: @box-shadow-base;
+                    &:hover {
+                        border-color: @primary-color-light;
+                    }
                 }
             }
         }
