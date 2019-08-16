@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Icon } from 'antd';
 import * as PlayerAction from '@/actions/player';
 import { getDuration } from '@/utils';
+import { checkMusic } from '@/api';
 import Volume from './Volume';
 import MusicList from './MusicList';
 
@@ -11,6 +12,8 @@ import styles from './index.module.less';
 
 const PlayBar = props => {
     const {
+        clearMusic,
+        getMusic,
         startMusic,
         pauseMusic,
         endMusic,
@@ -26,7 +29,6 @@ const PlayBar = props => {
         if (audio) {
             audio.volume = volume / 100;
             audio.onplaying = () => {
-                console.log(1);
                 startMusic();
             };
             audio.onpause = () => {
@@ -37,10 +39,39 @@ const PlayBar = props => {
                 setWidth(450 * (audio.currentTime / audio.duration));
             };
             audio.onended = () => {
-                endMusic();
+                console.log(musicList[musicIndex].name);
+                const nextIndex = musicIndex + 1;
+                const nextMusic = musicList[nextIndex];
+                if (nextMusic) {
+                    getMusic(nextMusic, musicList, nextIndex).then(status => {
+                        if (status === false) {
+                            audio.onended()
+                        }
+                    });
+                } else {
+                    endMusic();
+                }
             };
         }
-    }, [audio, pauseMusic, startMusic, endMusic, volume]);
+
+        return function cleanup() {
+            if (audio) {
+                audio.onpause = null;
+                audio.onpause = null;
+                audio.ontimeupdate = null;
+                audio.onended = null;
+            }
+        };
+    }, [
+        audio,
+        pauseMusic,
+        getMusic,
+        startMusic,
+        endMusic,
+        volume,
+        musicIndex,
+        musicList
+    ]);
 
     useEffect(() => {
         if (data) {
@@ -64,9 +95,11 @@ const PlayBar = props => {
     function handleClickProgress(e) {
         const offset = e.pageX - 327;
         const percent = offset / 450;
-        audio.currentTime = audio.duration * percent;
-        setWidth(450 * percent);
-        setTime(audio.duration * percent);
+        if (audio && audio.duration) {
+            audio.currentTime = audio.duration * percent;
+            setWidth(450 * percent);
+            setTime(audio.duration * percent);
+        }
     }
 
     const { url, detail } = data;
@@ -129,7 +162,14 @@ const PlayBar = props => {
             <div className={styles.right}>
                 <div className={styles.rightIcon}>
                     <Icon type='retweet' />
-                    <MusicList musicIndex={musicIndex} curMusic={data} list={musicList} tipVisible={tipVisible} />
+                    <MusicList
+                        clearMusic={clearMusic}
+                        getMusic={getMusic}
+                        musicIndex={musicIndex}
+                        curMusic={data}
+                        list={musicList}
+                        tipVisible={tipVisible}
+                    />
                     <Volume vol={volume} setVol={setVolume} />
                 </div>
             </div>

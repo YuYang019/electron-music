@@ -1,9 +1,16 @@
-import { getMusicUrl } from '../api';
+import { getMusicUrl, checkMusic } from '../api';
+import { notification } from 'antd';
+
+notification.config({
+    top: 65,
+    duration: 2,
+});
 
 export const PLAYER_DATA = 'PLAYER_DATA';
 export const PLAYER_START = 'PLAYER_START';
 export const PLAYER_PAUSE = 'PLAYER_PAUSE';
 export const PLAYER_END = 'PLAYER_END';
+export const PLAYER_CLEAR = 'PLAYER_CLEAR';
 
 function getAction(type, payload) {
     return {
@@ -14,21 +21,44 @@ function getAction(type, payload) {
 
 export function getMusic(music, musicList, musicIndex) {
     return (dispatch, getState) => {
-        return getMusicUrl({ id: music.id }).then(res => {
-            if (res.data && res.data.length) {
-                if (!res.data[0].url) {
-                    res.data[0].url = `https://music.163.com/song/media/outer/url?id=${music.id}.mp3`
+        return checkMusic({ id: music.id })
+            .then(res => {
+                if (!res.success) {
+                    notification.error({
+                        message: res.message || '亲爱的，暂无版权'
+                    });
+                    return;
                 }
-                const data = { detail: music, ...res.data[0] };
-                dispatch(
-                    getAction(PLAYER_DATA, {
-                        data,
-                        musicList: musicList ? musicList : [music],
-                        musicIndex
-                    })
-                );
-            }
-        });
+                getMusicUrl({ id: music.id }).then(res => {
+                    if (res.data && res.data.length) {
+                        if (!res.data[0].url) {
+                            notification.error({ message: '当前歌曲暂无资源' });
+                            return;
+                        }
+                        const data = { detail: music, ...res.data[0] };
+                        dispatch(
+                            getAction(PLAYER_DATA, {
+                                data,
+                                musicList: musicList ? musicList : [music],
+                                musicIndex
+                            })
+                        );
+                    }
+                });
+            })
+            .catch(err => {
+                notification.error({
+                    message: '亲爱的，暂无版权'
+                });
+                dispatch(getAction(PLAYER_DATA, { musicIndex }))
+                return false;
+            });
+    };
+}
+
+export function clearMusic() {
+    return (dispatch, getState) => {
+        dispatch(getAction(PLAYER_CLEAR));
     };
 }
 

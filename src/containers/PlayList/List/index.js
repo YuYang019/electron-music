@@ -34,7 +34,6 @@ const List = props => {
     const { status, data } = player;
 
     function handleItemClick(index) {
-        console.log(index)
         setIndex(index);
     }
 
@@ -54,12 +53,7 @@ const List = props => {
     }
 
     function handleDoubleClick(item) {
-        const { id } = item;
-        checkMusic({ id }).then(res => {
-            if (res.success === true) {
-                getMusic(item, tracks, curIndex);
-            }
-        });
+        getMusic(item, tracks, curIndex)
     }
 
     const colums = [

@@ -4,7 +4,14 @@ import styles from './index.module.less';
 
 // 只是简单的合并
 function compose(fn1, fn2) {
-    return (...args) => { fn1(...args); fn2(...args); }
+    return (...args) => {
+        if (typeof fn1 === 'function') {
+            fn1(...args);
+        }
+        if (typeof fn2 === 'function') {
+            fn2(...args);
+        }
+    };
 }
 
 export default props => {
@@ -18,10 +25,13 @@ export default props => {
         return event => fn(event, ...args);
     }
 
-    onClick = compose(onClick, handleRowClick)
-    
+    onClick = compose(
+        onClick,
+        handleRowClick
+    );
+
     function handleRowClick(event, row, rowIndex) {
-        setIndex(rowIndex)
+        setIndex(rowIndex);
     }
 
     return (
@@ -46,7 +56,7 @@ export default props => {
                         )}
                         key={row.id}
                     >
-                        {colums.map((col) => col.render(row, rowIndex))}
+                        {colums.map(col => col.render(row, rowIndex))}
                     </li>
                 );
             })}

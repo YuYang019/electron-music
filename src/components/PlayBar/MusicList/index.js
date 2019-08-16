@@ -3,10 +3,11 @@ import { Icon, Popover, Drawer } from 'antd';
 import classNames from 'classnames';
 import Table from '@/components/Table';
 import { getAuthor, getDuration } from '@/utils';
+import { checkMusic } from '@/api';
 import styles from './index.module.less';
 
 export default props => {
-    const { tipVisible, list, curMusic, musicIndex } = props;
+    const { tipVisible, list, curMusic, getMusic, clearMusic, musicIndex } = props;
     const [visible, setVisible] = useState(false);
     const [listDOM, setListDOM] = useState(null);
 
@@ -20,8 +21,7 @@ export default props => {
 
     useEffect(() => {
         if (visible && listDOM && musicIndex) {
-            console.log(musicIndex)
-            const scrollTop = 35 * musicIndex;
+            const scrollTop = 35 * (musicIndex - 6);
             listDOM.scrollTop = scrollTop;
         }
     }, [visible, listDOM, musicIndex])
@@ -50,8 +50,13 @@ export default props => {
         }
     ];
 
-    function handleItemClick() {}
-    function handleDoubleClick() {}
+    function handleClear() {
+        clearMusic()
+    }
+
+    function handleDoubleClick(row, rowIndex) {
+        getMusic(row, list, rowIndex);
+    }
 
     const rowClassName = (row, rowIndex) => {
         const classnames = classNames({
@@ -93,7 +98,7 @@ export default props => {
                                     <Icon type='folder-add' />
                                     收藏全部
                                 </span>
-                                <span>
+                                <span onClick={handleClear}>
                                     <Icon type='delete' />
                                     清空
                                 </span>
@@ -104,11 +109,8 @@ export default props => {
                     <div className={styles.listWrapper} ref={node => setListDOM(node)}>
                         <Table
                             onRow={{
-                                onClick: (event, row, rowIndex) => {
-                                    handleItemClick(rowIndex);
-                                },
                                 onDoubleClick: (event, row, rowIndex) => {
-                                    handleDoubleClick(row);
+                                    handleDoubleClick(row, rowIndex);
                                 }
                             }}
                             rowClassName={rowClassName}

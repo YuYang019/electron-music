@@ -1,4 +1,4 @@
-import { PLAYER_DATA, PLAYER_START, PLAYER_PAUSE, PLAYER_END } from '@/actions/player';
+import { PLAYER_DATA, PLAYER_START, PLAYER_PAUSE, PLAYER_END, PLAYER_CLEAR } from '@/actions/player';
 
 const playerState = {
     data: null,
@@ -17,6 +17,8 @@ export default (state = playerState, action) => {
       return state = { ...state, status: 2 };
     case PLAYER_END:
       return state = { ...state, status: 0 };
+    case PLAYER_CLEAR:
+      return state = { ...playerState }
     default:
       return state;
   }
