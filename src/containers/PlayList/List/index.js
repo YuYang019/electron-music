@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import MusicIcon from '@/components/MusicIcon';
 import Table from '@/components/Table';
-import { getDuration } from '@/utils';
+import { getDuration, getAuthor } from '@/utils';
 import * as PlayerAction from '@/actions/player';
 import { checkMusic } from '@/api';
 
@@ -14,14 +14,6 @@ import styles from './index.module.less';
 const remote = window.require('electron').remote;
 
 const { Menu, MenuItem } = remote;
-
-function getAuthor(authors) {
-    let result = '';
-    for (let i = 0; i < authors.length; i++) {
-        result += authors[i].name + ' / ';
-    }
-    return result.slice(0, -3);
-}
 
 function getIndex(index) {
     index = +index + 1;
@@ -65,7 +57,7 @@ const List = props => {
         const { id } = item;
         checkMusic({ id }).then(res => {
             if (res.success === true) {
-                getMusic(item, tracks);
+                getMusic(item, tracks, curIndex);
             }
         });
     }
@@ -108,7 +100,6 @@ const List = props => {
     ];
 
     const rowClassName = (row, rowIndex) => {
-        console.log(curIndex, rowIndex)
         const classnames = classNames({
             [styles.clicked]: rowIndex === curIndex,
             [styles.active]: data && row.id === data.id

@@ -1,15 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import styles from './index.module.less';
 
+// 只是简单的合并
+function compose(fn1, fn2) {
+    return (...args) => { fn1(...args); fn2(...args); }
+}
+
 export default props => {
     const { dataSource, colums, rowClassName, onRow } = props;
+    let { onClick, onDoubleClick } = onRow;
 
-    const { onClick, onDoubleClick } = onRow;
+    const [curIndex, setIndex] = useState(null);
 
     function bindHandler(fn, ...args) {
         if (typeof fn !== 'function') return null;
         return event => fn(event, ...args);
+    }
+
+    onClick = compose(onClick, handleRowClick)
+    
+    function handleRowClick(event, row, rowIndex) {
+        setIndex(rowIndex)
     }
 
     return (
@@ -20,6 +32,7 @@ export default props => {
                         ? rowClassName(row, rowIndex)
                         : rowClassName;
                 const rowClassNames = classNames(styles.item, rowClass, {
+                    [styles.clicked]: rowIndex === curIndex,
                     [styles.odd]: rowIndex % 2 === 0
                 });
                 return (

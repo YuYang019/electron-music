@@ -4,6 +4,7 @@ const playerState = {
     data: null,
     status: 0, // 0 未播放，1 播放中，2 暂停
     musicList: [],
+    musicIndex: null,
 }
 
 export default (state = playerState, action) => {

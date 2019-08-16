@@ -1,9 +1,94 @@
+@import '../../../theme/common.less';
+
 .popover {
     font-size: 12px;
     color: #000;
     font-weight: bold;
     :global .ant-popover-inner-content {
         padding: 12px 30px;
+    }
+}
+
+.musicList {
+    position: relative;
+    height: 100%;
+    .tags {
+        padding-top: 20px;
+        padding-left: 30px;
+        padding-bottom: 15px;
+        span:nth-child(1) {
+            font-size: 18px;
+            font-weight: bold;
+            color: @text-color-focus;
+        }
+    }
+    .head {
+        margin: 0 30px;
+        padding-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+        span {
+            display: inline-block;
+        }
+        > span {
+            &:nth-child(1) {
+                font-size: 12px;
+                color: rgb(174, 174, 174);
+            }
+            &:nth-child(2) {
+                font-size: 13px;
+                margin-top: -1px;
+                color: @text-color-focus;
+                i {
+                    margin-right: 5px;
+                }
+                span {
+                    padding: 0 15px;
+                }
+            }
+        }
+    }
+    .listWrapper {
+        position: absolute;
+        top: 95px;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        overflow-y: scroll;
+    }
+}
+
+.name, .author, .duration {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.name {
+    padding-left: 30px;
+    width: 240px;
+}
+
+.author {
+    padding-left: 10px;
+    width: 110px;
+}
+
+.duration {
+    padding-left: 30px;
+    width: 80px;
+    color: rgb(174, 174, 174);
+}
+
+.active {
+    .name {
+        color: @primary-color;
+        border-left: 3px solid @primary-color;
+        padding-left: 27px;
+    }
+    .author {
+        color: @primary-color;
     }
 }
 

@@ -14,7 +14,7 @@ const PlayBar = props => {
         startMusic,
         pauseMusic,
         endMusic,
-        player: { status, data, musicList }
+        player: { status, data, musicList, musicIndex }
     } = props;
     const [audio, setAudioDOM] = useState(null);
     const [tipVisible, setTipVisible] = useState(false);
@@ -129,7 +129,7 @@ const PlayBar = props => {
             <div className={styles.right}>
                 <div className={styles.rightIcon}>
                     <Icon type='retweet' />
-                    <MusicList list={musicList} tipVisible={tipVisible} />
+                    <MusicList musicIndex={musicIndex} curMusic={data} list={musicList} tipVisible={tipVisible} />
                     <Volume vol={volume} setVol={setVolume} />
                 </div>
             </div>

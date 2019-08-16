@@ -12,7 +12,7 @@ function getAction(type, payload) {
     };
 }
 
-export function getMusic(music, musicList) {
+export function getMusic(music, musicList, musicIndex) {
     return (dispatch, getState) => {
         return getMusicUrl({ id: music.id }).then(res => {
             if (res.data && res.data.length) {
@@ -23,7 +23,8 @@ export function getMusic(music, musicList) {
                 dispatch(
                     getAction(PLAYER_DATA, {
                         data,
-                        musicList: musicList ? musicList : [music]
+                        musicList: musicList ? musicList : [music],
+                        musicIndex
                     })
                 );
             }

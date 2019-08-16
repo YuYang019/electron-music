@@ -19,6 +19,14 @@ export function getDate(time, split = '-') {
     return `${year}${split}${month}${split}${day}`;
 }
 
+export function getAuthor(authors) {
+    let result = '';
+    for (let i = 0; i < authors.length; i++) {
+        result += authors[i].name + ' / ';
+    }
+    return result.slice(0, -3);
+}
+
 export function getDuration(duration, unit = 'ms') {
     if (!duration) {
         return '00:00';
