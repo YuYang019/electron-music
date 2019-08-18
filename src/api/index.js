@@ -18,3 +18,5 @@ export const getPlayList = (params) => axios.get('/playlist/detail', { params })
 export const checkMusic = (params) => axios.get('/check/music', { params }).then(res => res.data);
 // songurl
 export const getMusicUrl = (params) => axios.get('/song/url', { params }).then(res => res.data);
+// 歌词
+export const getLyric = (params) => axios.get('/lyric', { params }).then(res => res.data);

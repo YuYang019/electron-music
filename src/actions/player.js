@@ -1,4 +1,4 @@
-import { getMusicUrl, checkMusic } from '../api';
+import { getMusicUrl, checkMusic, getLyric } from '../api';
 import { notification } from 'antd';
 
 notification.config({
@@ -45,6 +45,10 @@ export function getMusic(music, musicList, musicIndex) {
                         );
                     }
                 });
+                getLyric({ id: music.id }).then(data => {
+                    console.log(data);
+                    dispatch(getAction(PLAYER_DATA, { lyric: data }))
+                })
             })
             .catch(err => {
                 notification.error({

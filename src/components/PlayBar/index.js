@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { Icon } from 'antd';
 import * as PlayerAction from '@/actions/player';
 import { getDuration } from '@/utils';
-import { checkMusic } from '@/api';
+import { Lrc, Runner } from 'lrc-kit';
+import Lyric from './Lyric';
 import Volume from './Volume';
 import MusicList from './MusicList';
 
@@ -17,14 +18,17 @@ const PlayBar = props => {
         startMusic,
         pauseMusic,
         endMusic,
-        player: { status, data, musicList, musicIndex }
+        player: { status, data, musicList, musicIndex, lyric }
     } = props;
     const [audio, setAudioDOM] = useState(null);
     const [tipVisible, setTipVisible] = useState(false);
+    const [lyricVisible, setLyricVisible] = useState(false);
     const [volume, setVolume] = useState(50);
     const [time, setTime] = useState(0);
     const [width, setWidth] = useState(0);
-
+    const [curLyric, setCurLyric] = useState(null)
+    const [lrcRunner, setLrcRunner] = useState(null)
+    
     useEffect(() => {
         if (audio) {
             audio.volume = volume / 100;
@@ -45,7 +49,7 @@ const PlayBar = props => {
                 if (nextMusic) {
                     getMusic(nextMusic, musicList, nextIndex).then(status => {
                         if (status === false) {
-                            audio.onended()
+                            audio.onended();
                         }
                     });
                 } else {
@@ -70,8 +74,28 @@ const PlayBar = props => {
         endMusic,
         volume,
         musicIndex,
-        musicList
+        musicList,
     ]);
+
+    useEffect(() => {
+        const lyricStr = (lyric && lyric.lrc.lyric) || '';
+        const runner = new Runner(Lrc.parse(lyricStr))
+        setLrcRunner(runner)
+        const handler = function () {
+            runner.timeUpdate(audio.currentTime)
+            const lyric = runner.curLyric()
+            setCurLyric(lyric)
+        }
+        if (audio) {
+            audio.addEventListener('timeupdate', handler)
+        }
+
+        return () => {
+            if (audio) {
+                audio.removeEventListener('timeupdate', handler)
+            }
+        }
+    }, [audio, lyric])
 
     useEffect(() => {
         if (data) {
@@ -132,6 +156,25 @@ const PlayBar = props => {
             <div className={styles.mid}>
                 <div className={styles.img}>
                     <img src={detail.al.picUrl} alt={detail.al.name} />
+                    <div
+                        onClick={() => {
+                            console.log('show');
+                            setLyricVisible(true);
+                        }}
+                        className={styles.mask}
+                    >
+                        {lyricVisible ? (
+                            <Icon type='down' />
+                        ) : (
+                            <Icon type='up' />
+                        )}
+                    </div>
+                    <Lyric
+                        lrcRunner={lrcRunner}
+                        curLyric={curLyric}
+                        visible={lyricVisible}
+                        setVisible={setLyricVisible}
+                    />
                 </div>
                 <div className={styles.info}>
                     <div className={styles.name}>
